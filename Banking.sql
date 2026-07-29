@@ -47,3 +47,4 @@ CREATE TABLE Loans (
     StartDate DATE,
 	EndDate DATE
 );
+describe Loans;
