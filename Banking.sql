@@ -1,6 +1,6 @@
 -- show databases
 CREATE DATABASE BankingDB;
-USE bankingdb;
+-- USE bankingdb;
 CREATE TABLE Customers (
 	CustomerID INT PRIMARY KEY,
     FirstName VARCHAR(50),
@@ -48,3 +48,64 @@ CREATE TABLE Loans (
 	EndDate DATE
 );
 describe Loans;
+
+ALTER TABLE Customers
+ADD DateOfBirth Date;
+Describe Customers;
+
+ALTER TABLE Customers
+MODIFY Phone VARCHAR(20);
+DESCRIBE Customers;
+
+ALTER TABLE Accounts 
+ADD CONSTRAINT chk_MiniBalance
+CHECK (Balance >= 1000);
+DESCRIBE Accounts;
+
+DROP TABLE AccountBranches;
+
+ALTER TABLE Accounts 
+ADD CustomerID INT;
+
+DESCRIBE Accounts;
+
+ALTER TABLE Accounts 
+ADD CONSTRAINT FK_Accounts_Customers
+FOREIGN KEY (CustomerID)
+REFERENCES Customers(CustomerID);
+
+DESCRIBE Accounts;
+
+ALTER TABLE Accounts
+ADD CONSTRAINT 
+PRIMARY KEY(AccountID);
+
+DESCRIBE Accounts;
+
+ALTER TABLE Customers
+MODIFY FirstName VARCHAR(50) NOT NULL;
+
+DESCRIBE Customers;
+
+ALTER TABLE Customers
+ADD CONSTRAINT uq_Email UNIQUE(Email); 
+
+DESCRIBE Customers;
+
+ALTER TABLE Branches
+ADD CONSTRAINT 
+PRIMARY KEY(BranchID);
+
+Describe Branches;
+
+ALTER TABLE Accounts
+ADD BranchID int;
+
+Describe accounts;
+
+ALTER TABLE Accounts
+ADD CONSTRAINT FK_Branch_Customers
+FOREIGN KEY (BranchID)
+REFERENCES Branches(BranchID);
+
+Describe Accounts;
