@@ -109,3 +109,56 @@ FOREIGN KEY (BranchID)
 REFERENCES Branches(BranchID);
 
 Describe Accounts;
+
+ALTER TABLE Transactions
+ADD CustomerID INT;
+
+desc transactions;
+
+ALTER TABLE Transactions
+DROP COLUMN CustomerID;
+
+ALTER TABLE Transactions
+ADD AccountID INT;
+desc transactions;
+
+ALTER TABLE Transactions
+DROP COLUMN AccountID;
+
+ALTER TABLE Transactions;
+
+SELECT 
+	CONSTRAINT_NAME,
+    CONSTRAINT_TYPE
+FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS
+WHERE TABLE_SCHEMA = 'bankingdb'
+AND TABLE_NAME = 'Accounts';
+    
+ALTER TABLE Transactions
+modify TransactionID INT PRIMARY KEY;
+
+ALTER TABLE Transactions
+ADD AccountID INT;
+
+ALTER TABLE Transactions
+ADD CONSTRAINT FK_Transactions_Accounts
+FOREIGN KEY (AccountID)
+REFERENCES Accounts(AccountID);
+
+ALTER TABLE Loans
+ADD CONSTRAINT PK_Loans
+PRIMARY KEY(LoanID);
+
+ALTER TABLE Loans
+ADD CustomerID INT;
+
+ALTER TABLE Loans
+ADD CONSTRAINT FK_Loans_Customers
+FOREIGN KEY (CustomerID)
+REFERENCES Customers(CustomerID);
+
+desc Loans;
+
+-- normalization and dinormalization important foe the interwiews
+-- Normalizaton is the process of removing duplicates data from table
+-- divide large table to small table 
