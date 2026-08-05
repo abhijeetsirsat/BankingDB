@@ -184,6 +184,13 @@ VALUES
 (103,'Neha','Singh','neha@gmail.com','9277476727','2026-08-03','1992-07-03'),
 (104,'Mukul','Jha','mukul@gmail.com','7929267534','2025-02-01','1995-11-06');
 
+INSERT INTO Customers
+(CustomerID, FirstName, LastName, Email, Phone, AccountCreationDate, DateOfBirth)
+VALUES
+(105,'Avinash','Mishra','avinash@gmail.com','9238938284','2026-03-08','2000-08-27');
+
+SELECT * FROM Customers;
+
 -- FOR UPDATE IN COLUMNS
 UPDATE Customers 
 SET 
@@ -199,4 +206,121 @@ VALUES
 (201,101,'Savings',25000);
 
 SELECT * FROM Accounts;
+
+INSERT INTO Accounts
+(AccountID, CustomerID, AccountType, Balance, BranchID)
+VALUES 
+(202,102,'Savings','30000','302'),
+(203,103,'Current','35000','303'),
+(204,104,'Current','40000','304');
+
+INSERT INTO Accounts
+(AccountID, CustomerID, AccountType, Balance, BranchID)
+VALUES
+(205,105,'Current','50000','305');
+
+SELECT * FROM Accounts;
+
+UPDATE Accounts
+SET 
+	BranchID = '301'
+WHERE
+    AccountID = '201';
+    
+SELECT * FROM Accounts;
+
+INSERT INTO branches
+(BranchID, BranchName, BranchAddress, BranchPhone)
+VALUES
+(301,'Central Branch','Sitabuldi,Nagpur','9876543210'),
+(302,'City Branch','Dharampeth,Nagpur','9123456780'),
+(303,'Lake View Branch','Ambazari,Nagpur','9988776655'),
+(304,'East Branch','Manewada,Nagpur','9012345678');
+
+INSERT INTO branches
+(BranchID, BranchName, BranchAddress, BranchPhone)
+VALUES
+(305,'Vest Branch','Besa,Nagpur','9876543210');
+
+SELECT * FROM branches;
+
+INSERT INTO Transactions
+(TransactionID,TransactionDate,Amount,TransactionType,AccountID)
+VALUES 
+(401, '2026-08-01', 5000.00, 'Deposit', '201'),
+(402, '2026-08-08', 1200.00, 'Withdrawal', '202'),
+(403, '2026-08-15', 2500.00, 'Deposit', '203'),
+(404, '2026-08-20', 800.00, 'Withdrawal', '204');
+
+INSERT INTO Transactions
+(TransactionID,TransactionDate,Amount,TransactionType,AccountID)
+VALUES 
+(405, '2026-08-01', 5000.00, 'Deposit', '205');
+
+SELECT * FROM Transactions;
+
+INSERT INTO Loans
+(LoanID, LoanAmount, IntrestRate, StartDate, EndDate, CustomerID)
+VALUES
+(501, 100000.00, 2.50, '2026-01-15', '2029-01-15', '101'),
+(502, 250000.00, 3.25, '2026-02-10', '2031-02-10', '102'),
+(503, 500000.00, 4.10, '2026-03-05', '2036-03-05', '103'),
+(504, 150000.00, 5.75, '2026-04-20', '2030-04-20', '104');
+
+INSERT INTO Loans
+(LoanID, LoanAmount, IntrestRate, StartDate, EndDate, CustomerID)
+VALUES
+(505, 900000.00, 1.50, '2026-01-21', '2029-01-19', '105');
+
+SELECT * FROM Loans;
+
+-- for delete report or row
+-- DELETE FROM Loans
+-- WHERE LoanID = 302;
+
+UPDATE Accounts 
+SET 
+    Balance = 35000
+WHERE
+    CustomerID = 101;
+    
+SELECT * FROM Accounts;
+SELECT * FROM Loans;
+SELECT * FROM Transactions;
 SELECT * FROM Customers;
+
+UPDATE Accounts 
+SET 
+    Balance = Balance + 2000
+WHERE
+    CustomerID = 102;
+    
+    UPDATE Customers 
+SET 
+    Email = 'rahulsharma@gmail.com',
+    Phone = '7372748274'
+WHERE
+    CustomerID = 101;
+
+SELECT 
+    CustomerID, FirstName, LastName, Phone
+FROM
+    Customers;
+    
+SELECT * FROM Accounts
+WHERE AccountType = 'Savings';
+    
+SELECT * FROM Accounts
+WHERE Balance > 30000;
+    
+SELECT * FROM Accounts
+WHERE AccountType != 'Savings';
+
+SELECT * FROM Accounts
+WHERE AccountType = 'Savings' AND Balance >=30000;
+
+SELECT * FROM Accounts
+WHERE AccountType = 'Savings' OR Balance >=30000;
+
+SELECT * FROM Accounts
+WHERE NOT AccountType = 'Savings';
