@@ -324,3 +324,90 @@ WHERE AccountType = 'Savings' OR Balance >=30000;
 
 SELECT * FROM Accounts
 WHERE NOT AccountType = 'Savings';
+
+-- FIND ALL CUSTOMERS REGISTERED AFTER 11JULY2026
+SELECT * FROM Customers
+WHERE AccountCreationDate > '2026-03-08';
+
+-- USING IN 
+SELECT firstname,lastname,phone
+FROM Customers
+WHERE Phone IN (7372748274,7929267534,9238938284);
+
+-- same output using OR
+SELECT firstname,lastname,phone
+FROM Customers
+WHERE Phone = '7372748274' OR Phone = '7929267534' OR Phone = '9238938284';
+
+-- BETTWEEN OPERATORS
+
+-- FIND CUSTOMERS HAVING BALANCE BRTWEEN 30000 TO 40000
+SELECT * FROM Accounts
+WHERE Balance BETWEEN  '30000' AND '40000';
+-- The values specified in the range are including in the results.
+
+-- using AND
+SELECT * FROM Accounts
+WHERE Balance >=30000 AND balance <=40000;
+
+--    LIKE OPERATOR
+-- find all customers whole first name starts from with letter 'k'
+-- % matches any number of character and even zero character
+-- "-" exactly match one character
+
+
+SELECT * FROM Customers
+WHERE FirstName LIKE 'k%';
+
+SELECT * FROM Accounts;
+SELECT * FROM Loans;
+SELECT * FROM Transactions;
+SELECT * FROM Customers;
+
+-- find all customers whole Last name starts from with letter 'a'
+SELECT * FROM Customers
+WHERE LastName LIKE '%a';
+
+-- find all customers whole last name has exackly 3 characters.
+
+SELECT * FROM Customers
+WHERE LastName LIKE '___';
+
+
+-- ORDER BY CAUSE 
+-- SORT THE ACCOUNTS TABLE ACCORDNG THE TABLE BALANCE
+
+SELECT CustomerID,Balance 
+FROM Accounts
+ORDER BY Balance;
+
+-- SORT THE BRANCHES TABLE ACCORDNG THE TABLE BRANCHNAME
+
+SELECT BranchID,BranchName
+FROM Branches
+ORDER BY BranchName;
+
+-- SORT THE ACCOUNT TABLE ACCORDNG THE CUSTOMER BALANCE FROM HIGHEST TO LOWEST
+
+SELECT AccountID,Balance
+FROM Accounts
+ORDER BY Balance DESC;
+
+-- SORT ACCORDING TO MULTIPLE COLUMN 
+-- SORT ACCOUNTS TABLE ACCORDING TO THE ACCOUNTYPE AND BALNCE
+
+SELECT AccountID,AccountType,Balance,CustomerID
+FROM Accounts
+ORDER BY AccountType DESC, Balance DESC;
+
+-- DISTINCT CLAUSE
+-- FIND THE DISTINCT (QUNIQUE) ACCOUNTS TYPES FROM ACCOUNT TABLE 
+
+SELECT DISTINCT AccountType
+FROM Accounts;
+
+-- FIND THE DISTINCT (QUNIQUE) TRANSACTION TYPES AND ACCOUNTID
+-- FROM TRANSACTIONS TABLE
+
+SELECT DISTINCT TransactionType,AccountID
+FROM Transactions;
