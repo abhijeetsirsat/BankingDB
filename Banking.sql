@@ -411,3 +411,86 @@ FROM Accounts;
 
 SELECT DISTINCT TransactionType,AccountID
 FROM Transactions;
+
+-- USING LIMIT
+SELECT * FROM  TRANSACTIONS
+LIMIT 2;
+
+-- USING LIMIT AND OFFSET
+SELECT * FROM  TRANSACTIONS
+LIMIT 2 OFFSET 2;
+
+-- TO SHOW TO HIGHEST BALANCE BY LIMIT
+SELECT * FROM  Accounts
+ORDER BY Balance DESC
+LIMIT 2;
+
+-- 2 - ROWS TO SKIP , 1 - ROWS TO RETURNS
+SELECT * FROM  Accounts
+ORDER BY Balance DESC
+LIMIT 2,1;  -- 2 - ROWS TO SKIP , 1 - ROWS TO RETURNS
+
+INSERT INTO Customers
+(CustomerID, FirstName, LastName, Email, Phone, AccountCreationDate, DateOfBirth)
+VALUES
+(106,'Priya','Mehta','priya@gmail.com',NULL,'2026-05-08','1991-07-016'),
+(107,'Rohan','Shinde','rohan@gmail.com',NULL,'2025-04-09','1996-06-09'),
+(108,'Om','Supare','om@gmail.com','9429267658','2025-03-07','1996-04-08');
+
+SELECT * FROM Customers;
+
+-- USING IS NOT -- IS RETURN NOT PHONE NUMBERS AVAILABLE 
+SELECT * FROM Customers
+WHERE Phone IS NULL;
+
+-- USING IS NOT NULL -- IT RETURN ALL PHONE NUMBERS IS AVAILABLE
+SELECT * FROM Customers
+WHERE Phone IS NOT NULL;
+
+INSERT INTO Customers
+(CustomerID, FirstName, LastName, Email, Phone, AccountCreationDate, DateOfBirth)
+VALUES
+(109,'Ayush','Singh','ayush@gmail.com','9898765436','2025-05-09','1991-08-015');
+
+INSERT INTO Accounts
+(AccountID, CustomerID, AccountType, Balance, BranchID)
+VALUES 
+(206,106,'Savings','60000','301'),
+(207,107,'Current','55000','302'),
+(208,108,'Current','63000','303'),
+(209,109,'Current','91000','304');
+Select * from accounts;
+
+SELECT * 
+FROM Accounts;
+INSERT INTO Transactions
+(TransactionID,TransactionDate,Amount,TransactionType,AccountID)
+VALUES 
+(406, '2026-07-05', 6000.00, 'Deposit', '206'),
+(407, '2026-05-09', 5400.00, 'Withdrawal', '207'),
+(408, '2026-05-17', 4500.00, 'Deposit', '208'),
+(409, '2026-05-13', 7500.00, 'Withdrawal', '209');
+select * from transactions;
+
+INSERT INTO Loans
+(LoanID, LoanAmount, IntrestRate, StartDate, EndDate, CustomerID)
+VALUES
+(506, 120000.00, 2.50, '2026-01-12', '2029-01-11', '106'),
+(507, 170000.00, 3.25, '2026-02-09', '2031-02-03', '107'),
+(508, 240000.00, 4.10, '2026-03-04', '2036-03-04', '108'),
+(509, 320000.00, 5.75, '2026-04-17', '2030-04-16', '109');
+select * from loans;
+
+-- CASE STATEMENT
+-- USED TO APPLY CONDTIONAL LOGIC
+-- USING CASE STATEMENT
+
+SELECT
+AccountID,
+AccountType,
+Balance,
+CASE
+	WHEN Balance >= 50000 THEN 'High Value Customer'
+    ELSE 'Low Value'
+END AS Category
+FROM Accounts;
