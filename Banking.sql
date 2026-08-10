@@ -494,3 +494,214 @@ CASE
     ELSE 'Low Value'
 END AS Category
 FROM Accounts;
+
+-- HOMEWORK
+-- Q.1) Display the CustomerID, FirstName and Email of customers whose AccountCreationDate is after 1-Jan-2025.
+
+SELECT * FROM Customers
+WHERE AccountCreationDate > '2025-01-01';
+
+-- Q.2) Display all Savings accounts having balance greater than ₹20,000.
+
+SELECT * FROM Accounts
+WHERE AccountType ='Savings' AND Balance > 20000;
+
+-- Q.3) Display customers whose Phone number is NOT NULL.
+
+SELECT * FROM Customers
+WHERE Phone IS NOT NULL;
+
+-- Q.4) Display distinct Account Types available in the Accounts table.
+
+SELECT DISTINCT AccountType
+FROM Accounts;
+
+-- Q.5) Display customers whose FirstName starts with 'R'.
+
+SELECT * FROM Customers
+WHERE FirstName LIKE 'R%';
+
+-- Level 2 (Medium)
+-- Q.1) Display Savings accounts having balance between ₹20,000 and ₹80,000.
+
+SELECT * FROM Accounts
+WHERE Balance BETWEEN  '20000' AND '80000';
+
+-- Q.2) Display customer names whose phone number is NULL and account was created after 2025-01-01.
+
+SELECT * FROM Customers
+WHERE Phone IS NULL AND  AccountCreationDate >2025-01-01;
+
+-- Q.3) Display all customers whose FirstName starts with 'A' OR LastName starts with 'S'.
+
+SELECT * FROM Customers
+WHERE FirstName LIKE 'A%' OR LastName Like 'S%';
+
+-- Q.4) Display all accounts whose AccountType is Savings or Salary and balance is greater than ₹10,000.
+
+SELECT * FROM Accounts
+WHERE AccountType ='Savings' AND Balance > 10000;
+
+-- Q.5) Display customers whose CustomerID is IN (101,102,105,109) and phone number is not NULL.
+
+SELECT * FROM Customers
+WHERE  CustomerID IN (101,102,105,109) AND Phone IS NOT NULL;
+
+-- Level 3 (Intermediate)
+-- Q.1) Display customers whose FirstName starts with 'P' and Phone IS NULL.
+
+SELECT * FROM Customers
+WHERE FirstName LIKE 'P%' AND Phone IS NULL;
+
+-- Q.2) Display accounts whose balance is NOT BETWEEN ₹20,000 and ₹50,000.
+
+SELECT * FROM Accounts
+WHERE Balance NOT BETWEEN  '20000' AND '50000';
+
+-- Q.3) Display customers whose CustomerID is NOT IN (101,102,103).
+
+SELECT * FROM Customers
+WHERE  CustomerID NOT IN (101,102,103);
+
+-- Q.4) Display transactions that are Withdrawal and amount is less than ₹5000.
+
+SELECT * FROM Transactions
+WHERE TransactionType ='Withdrawal' AND Amount < 5000;
+
+-- Q.5) Display customers whose email ends with gmail.com and phone number is available.
+
+SELECT * FROM customers
+WHERE Email LIKE '%gmail.com'
+AND Phone IS NOT NULL;
+
+-- Level 4 (Advanced Filtering)
+
+-- Q.1) Display customer names whose phone number is NULL OR email starts with s.
+
+SELECT FirstName, LastName
+FROM customers
+WHERE Phone IS NULL OR Email LIKE 's%';
+
+-- Q.2) Display Savings accounts having balance greater than ₹10,000 AND belonging to Branch 1 ?
+
+SELECT * FROM accounts
+WHERE AccountType = 'Savings' AND Balance > 10000 AND BranchID = 1;
+
+-- Q.3) Display Current accounts having balance between ₹40,000 and ₹1,00,000 
+
+SELECT * FROM accounts
+WHERE AccountType = 'Current' AND Balance BETWEEN 40000 AND 100000;
+
+-- Q.4) Display customers whose last name starts with S and were AccountCreationDate after 2024
+
+SELECT * FROM customers
+WHERE LastName LIKE 'S%' AND AccountCreationDate > '2024-01-01'; 
+
+-- q.5) Display transactions whose amount is IN (2000,3000,5000,7000)
+
+SELECT * FROM transactions
+WHERE Amount IN (2000, 3000, 5000, 7000);
+
+-- Level 5 (Challenge Questions)
+-- q.1) Display first 5 customers whose FirstName starts with A or R, ordered by CustomerID
+
+SELECT * FROM customers
+WHERE FirstName LIKE 'A%' OR FirstName LIKE 'R%'
+ORDER BY CustomerID LIMIT 5;
+
+-- Q.2) Display Savings and Salary accounts whose balance is greater than ₹15,000 and less than ₹60,000.
+SELECT * FROM accounts
+WHERE AccountType IN ('Savings', 'Salary') AND Balance > 15000 AND Balance < 60000;
+
+-- Q.3) Display customers whose CustomerID is IN (101,103,105,107,109) and DateOfBirth is between 1994 and 2000
+
+SELECT * FROM customers
+WHERE CustomerID IN (101, 103, 105, 107, 109) AND DateOfBirth BETWEEN '1994-01-01' AND '2000-12-31';
+
+-- Q.4) Display transactions whose amount is greater than ₹2000 but less than ₹8000 and TransactionType is not Withdrawal.
+
+SELECT * FROM transactions
+WHERE Amount > 2000 AND Amount < 8000 AND TransactionType <> 'Withdrawal';
+
+-- Q.5) Display customers whose phone number is NULL or FirstName contains 'an'
+
+SELECT * FROM customers
+WHERE Phone IS NULL OR FirstName LIKE '%an%';
+
+-- Tricky Level 1
+-- Q.1) Display all customers whose first name starts with 'R' or 'S' but whose phone number is NULL.
+
+SELECT * FROM customers
+WHERE FirstName LIKE 'R%' OR FirstName LIKE 'S%' AND Phone IS NULL;
+
+-- Q.2) Display all accounts that are not Savings accounts and have a balance greater than ₹30,000.
+
+SELECT * FROM accounts
+WHERE AccountType <> 'Savings' AND Balance > 30000;
+
+-- Q.3) Display customers whose CustomerID is not 101, 102, or 103.
+
+SELECT * FROM customers
+WHERE CustomerID NOT IN (101, 102, 103);
+
+-- Q.4) Display customers whose email does not end with "gmail.com"
+
+SELECT * FROM customers
+WHERE Email NOT LIKE '%gmail.com';
+
+-- Q.5) Display accounts whose balance is not between ₹20,000 and ₹50,000.
+
+SELECT * FROM accounts
+WHERE Balance NOT BETWEEN 20000 AND 50000;
+
+-- Tricky Level 2
+-- Q.1) Display customers whose CustomerID is between 101 and 110 but not equal to 105 or 108.
+
+SELECT * FROM customers
+WHERE CustomerID BETWEEN 101 AND 110 AND CustomerID NOT IN (105, 108);
+
+-- Q.2) Display transactions whose amount is greater than ₹2000 but not equal to ₹5000
+
+SELECT * FROM transactions
+WHERE Amount > 2000 AND Amount <> 5000;
+
+-- Q.3) Display customers whose last name starts with 'S' and email contains gmail but phone number is NULL
+
+SELECT * FROM customers
+WHERE LastName LIKE 'S%' AND Email LIKE '%gmail%' AND Phone IS NULL;
+
+-- Q.4) Display accounts having balance between ₹15,000 and ₹60,000 but not belonging to Branch 2.
+
+SELECT * FROM accounts
+WHERE Balance BETWEEN 15000 AND 60000 AND BranchID <> 2;
+
+-- Q.5) Display customers whose FirstName starts with 'P' or ends with 't'
+
+SELECT * FROM customers
+WHERE FirstName LIKE 'P%' OR FirstName LIKE '%t';
+
+-- Tricky Level 3 (Logical Confusion)
+-- Q.1) Display all Savings accounts having balance greater than ₹20,000 OR belonging to Branch 1
+
+SELECT * FROM accounts
+WHERE AccountType = 'Savings' AND Balance > 20000 OR BranchID = 1;
+
+-- Q.2) Display all customers whose phone is NULL OR email contains gmail.
+
+SELECT * FROM customers
+WHERE Phone IS NULL OR Email LIKE '%gmail%';
+
+-- Q.3) Display customers whose FirstName starts with 'A' or 'R' and whose CustomerID is greater than 105
+
+SELECT * FROM customers
+WHERE (FirstName LIKE 'A%' OR FirstName LIKE 'R%') AND CustomerID > 105;
+
+-- Q.4) Display customers whose CustomerID is NOT IN (101,103,105) and phone number is NOT NULL
+
+SELECT * FROM customers
+WHERE CustomerID NOT IN (101, 103, 105) AND Phone IS NOT NULL;
+
+-- Q.5) Display accounts whose balance is less than ₹10,000 OR greater than ₹80,000.
+
+SELECT * FROM accounts
+WHERE Balance < 10000 OR Balance > 80000;
