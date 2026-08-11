@@ -705,3 +705,65 @@ WHERE CustomerID NOT IN (101, 103, 105) AND Phone IS NOT NULL;
 
 SELECT * FROM accounts
 WHERE Balance < 10000 OR Balance > 80000;
+
+-- USING CASE STATEMENT
+
+-- CATEGORIZE THE DEPOSITE IN THE TRANSACTIONS TABKL PER CONDITIONS GIVEN
+-- IF ABOVE 10000(INCLUDE) HIGH AMOUNT
+-- IF 5000(INCLUDE)TO 10000 MEDIUM AMOUNT
+-- IF UPTO 5000 LOW AMOUNT
+-- FOR TRANSACTIONS TYPE WITHDRAWAL"NOT APPLICABLE"
+
+
+SELECT
+AccountID,
+AccountType,
+Balance,
+CASE
+	WHEN Balance >= 50000 THEN 'High Value Customer'
+    ELSE 'Low Value'
+END AS Category
+FROM Accounts;
+
+SELECT 
+    * ,
+CASE 
+WHEN TransactionType = 'Deposit' AND Amount >10000 THEN 'HIGH AMOUNT'
+WHEN TransactionType = 'Deposit' AND Amount >= 5000 THEN 'MEDIUM AMOUNT'
+WHEN TransactionType = 'Deposit' AND Amount < 5000 THEN 'LOW AMOUNT'
+ELSE 'NOT APPLICABLE'
+END AS'Transactions Profile'
+FROM Transactions;
+
+-- USING UPPER CASE
+
+SELECT CustomerID, upper (FirstName), upper (LastName)
+From Customers;
+
+-- USING LOWE CASE
+
+SELECT CustomerID, LOWER (FirstName), LOWER (LastName)
+From Customers;
+
+-- USING LENGTH CASE
+
+SELECT LastName, LENGTH (LastName)
+From Customers;
+
+SELECT length("नागपूर"); -- GIVES OUTPUT IN NOMBER OF BYTES
+SELECT length("NAGPUR"); -- GIVES OUTPUT IN NOMBER OF BYTES
+SELECT char_length("NAGPUR"); -- GIVES OP IN NUMBER OF CHARACTERS
+SELECT char_length("नागपूर"); -- GIVES OP IN NUMBER OF CHARACTERS
+-- " AS " use for change the column name
+
+-- CONCAT function
+
+SELECT concat( " OM", " ","SUPARE") AS NAME;
+
+SELECT concat(firstname, " ", lastname) AS fullname,phone from customers;
+
+-- SUBSTRING () FUNCTION
+
+SELECT substring("HELLO WORLD",1,5);
+
+SELECT CustomerID, concat(substring(firstname,1,1),".",lastname)AS FULLNAME,Phone from customers;
