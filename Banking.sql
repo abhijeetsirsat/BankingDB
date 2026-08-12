@@ -844,3 +844,9 @@ floor(datediff(curdate(),dateofbirth)/365) as age from customers;
 
 SELECT concat(firstname, " ", lastname) AS fullname,AccountCreationDate,
 date_add(AccountCreationDate,interval 1 year) as KYCRenual from customers;
+
+SELECT concat(firstname, " ", lastname) AS fullname,dateofbirth,
+(datediff(curdate(),dateofbirth)/365) as age from customers;
+
+SELECT avg(Balance) from accounts
+WHERE AccountType = "Current";
