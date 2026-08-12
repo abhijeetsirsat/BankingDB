@@ -767,3 +767,80 @@ SELECT concat(firstname, " ", lastname) AS fullname,phone from customers;
 SELECT substring("HELLO WORLD",1,5);
 
 SELECT CustomerID, concat(substring(firstname,1,1),".",lastname)AS FULLNAME,Phone from customers;
+
+-- TRIM FUNCTION 
+-- trim remove extra spaces 
+-- SELECT TRIM (username)
+-- FROM user
+
+SELECT length("HELLO WORLD"); -- without trim function
+SELECT length(TRIM("  HELLO WORLD  ")); -- with trim function
+SELECT length(TRIM(SUBSTRING("HELLO WORLD",6))); -- WITH TRIM AND SUBSTRING
+
+-- REPLACE () FUNCTION
+--  case sensitive
+SELECT replace("Mat","M","C");
+
+-- MATH BUILT-IN FUNCTION
+-- AVG FUNCTION
+SELECT avg(Balance) from accounts
+WHERE AccountType = "Savings";
+
+-- using round Function
+SELECT round(avg(Balance),2) from accounts
+WHERE AccountType = "Savings";
+
+-- CEIL () OR CEILING FUNCTION
+-- CEIL Always return integer values AND give higher value
+
+SELECT ceil(avg(Balance)) from accounts
+WHERE AccountType = "Savings";
+
+-- FLOOR () FUNCTION
+
+SELECT floor(avg(Balance)) from accounts
+WHERE AccountType = "Savings";
+
+-- ABSOLUTE () FUNCTION
+-- IT Removes the signs
+SELECT abs(-3656); -- IT Removes the signs
+SELECT abs(-1.35); -- IT Removes the signs
+
+-- MOD VALUE 
+-- IT RETURNS REMAINDER UFTER DIVISION
+SELECT (7/3); -- NORMAL DIVISION
+SELECT mod(7,3); -- MOD DIVISION .... IT RETURN REMAINDER VALUE
+
+-- POWER () 
+
+SELECT power(2,3);
+SELECT power(1.5,3);
+
+-- SQUAREROOT ()
+
+SELECT sqrt(9);
+SELECT sqrt(124);
+
+-- DATE FUNCTION 
+-- NOW() FUNCTION
+SELECT now();
+
+-- CURTDATE FUNCTION
+SELECT curdate();
+
+-- CURTIME FUNCTION
+SELECT curtime();
+
+-- YEAR() MONTH() DATE()
+
+SELECT DateOfBirth, year(Dateofbirth)AS YEAR,month(dateofbirth)AS MONTH,day(dateofbirth)AS DATE
+from customers;
+
+-- DATEDIFF() 
+SELECT concat(firstname, " ", lastname) AS fullname,dateofbirth,
+floor(datediff(curdate(),dateofbirth)/365) as age from customers;
+
+-- DATE ADD function
+
+SELECT concat(firstname, " ", lastname) AS fullname,AccountCreationDate,
+date_add(AccountCreationDate,interval 1 year) as KYCRenual from customers;
