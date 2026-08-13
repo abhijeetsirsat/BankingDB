@@ -845,8 +845,63 @@ floor(datediff(curdate(),dateofbirth)/365) as age from customers;
 SELECT concat(firstname, " ", lastname) AS fullname,AccountCreationDate,
 date_add(AccountCreationDate,interval 1 year) as KYCRenual from customers;
 
-SELECT concat(firstname, " ", lastname) AS fullname,dateofbirth,
-(datediff(curdate(),dateofbirth)/365) as age from customers;
+-- 7.38  time aggrigate functions , count time 7.39 , MAX 8.04  GROUP BY 8.30
 
-SELECT avg(Balance) from accounts
-WHERE AccountType = "Current";
+-- AGGRIGATE FUNCTION ..................................................................................................
+
+-- COUNT () FUNCTION .... Count rows 
+
+SELECT count(*) AS TotalCustomers FROM customers; -- count rows
+SELECT count(Phone) AS TotalCustomers FROM customers; -- it skip the null values rows and return output
+
+-- SUM () FUNCTION
+
+SELECT sum(Balance) AS TotalBalance from Accounts;
+SELECT sum(Balance) AS SavingBalance from Accounts where AccountType = "Savings";
+SELECT sum(Balance) AS SavingBalance from Accounts where AccountType = "Current";
+
+-- AVG () FUNCTION
+
+SELECT avg(Amount) AS AverageAmount FROM transactions;
+SELECT avg(Amount) AS AverageAmountDeposit FROM transactions WHERE transactiontype = "Deposit";
+SELECT avg(Amount) AS AverageAmountWithdrawal FROM transactions WHERE transactiontype = "Withdrawal";
+
+-- MAX () AND MIN () FUNCTION
+-- find maximum balace in savings account
+SELECT max(Balance) as MaxBalance from Accounts where AccountType = "Savings";
+
+-- find minimum balace in savings account
+SELECT min(Balance) as MaxBalance from Accounts where AccountType = "Savings";
+
+-- GROUP BY () FUNCTION
+
+SELECT transactiontype, sum(amount) from transactions
+group by (TransactionType);
+
+SELECT *FROM accounts;
+
+SELECT AccountType, count(AccountType),
+sum(Balance),
+avg(Balance) 
+from accounts 
+group by (AccountType);
+
+SELECT branchid,AccountType,
+count(*)
+From accounts
+group by BranchID,AccountType
+order by BranchID;
+
+-- HAVING
+
+SELECT branchid,AccountType,
+count(*)
+From accounts
+group by BranchID,AccountType
+having count(*) >= 2;
+
+SELECT branchid,AccountType,
+count(*)
+From accounts
+group by BranchID,AccountType
+having count(*) >= 2 AND AccountType = "Savings";
