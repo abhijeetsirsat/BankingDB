@@ -900,8 +900,57 @@ From accounts
 group by BranchID,AccountType
 having count(*) >= 2;
 
+SELECT * FROM loans
+WHERE LoanID = 506;
+
+DELETE FROM loans
+WHERE LoanID = 509;
+
 SELECT branchid,AccountType,
 count(*)
 From accounts
 group by BranchID,AccountType
 having count(*) >= 2 AND AccountType = "Savings";
+select * from customers;
+
+-- Find Number Of Customers Specific Years From Customers
+SELECT year(AccountCreationDate) As Years, count(*) as NoOfAccounts
+from customers
+group by year(AccountCreationDate)
+order by years;
+
+-- JOINS
+-- A join combines a relaated rows from different tables based on a column 
+-- inner joins
+-- defination : matches rows that exist in both tables
+
+select * from loans;
+select * from accounts;
+select * from branches;
+
+select c.CustomerID,c.FirstName,c.LastName,l.LoanAmount,l.IntrestRate
+FROM Customers c
+INNER JOIN loans l
+on 
+c.CustomerID = L.customerID; 
+
+-- find the branch name for all the accountid's savepoint
+-- include accountid, accounttype, and brnchname, branchddress.
+
+select a.accountid,a.accounttype,b.branchname,b.branchaddress
+from accounts a
+inner join branches b
+on b.branchid = a.branchid
+where AccountType = 'savings'
+limit 3;
+
+-- find all the cusomers(name,phone) where transactions (accounttype,balance) is deposit
+
+select c.firstname,c.lastname,c.phone,a.accounttype,a.balance
+from customers c
+inner join accounts	a
+on c.customerid = a.customerid
+where accounttype = 'savings';
+
+select * from customers;
+select * from accounts;
