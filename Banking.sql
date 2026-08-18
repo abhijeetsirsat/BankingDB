@@ -706,7 +706,7 @@ WHERE CustomerID NOT IN (101, 103, 105) AND Phone IS NOT NULL;
 SELECT * FROM accounts
 WHERE Balance < 10000 OR Balance > 80000;
 
--- USING CASE STATEMENT
+-- USING CASE STATEMENT..**************************************************************************************************
 
 -- CATEGORIZE THE DEPOSITE IN THE TRANSACTIONS TABKL PER CONDITIONS GIVEN
 -- IF ABOVE 10000(INCLUDE) HIGH AMOUNT
@@ -781,7 +781,8 @@ SELECT length(TRIM(SUBSTRING("HELLO WORLD",6))); -- WITH TRIM AND SUBSTRING
 --  case sensitive
 SELECT replace("Mat","M","C");
 
--- MATH BUILT-IN FUNCTION
+-- MATH BUILT-IN FUNCTION..**************************************************************************************************
+
 -- AVG FUNCTION
 SELECT avg(Balance) from accounts
 WHERE AccountType = "Savings";
@@ -816,7 +817,7 @@ SELECT mod(7,3); -- MOD DIVISION .... IT RETURN REMAINDER VALUE
 SELECT power(2,3);
 SELECT power(1.5,3);
 
--- SQUAREROOT ()
+-- SQUAREROOT ()..**************************************************************************************************
 
 SELECT sqrt(9);
 SELECT sqrt(124);
@@ -831,7 +832,7 @@ SELECT curdate();
 -- CURTIME FUNCTION
 SELECT curtime();
 
--- YEAR() MONTH() DATE()
+-- YEAR() MONTH() DATE()..**************************************************************************************************
 
 SELECT DateOfBirth, year(Dateofbirth)AS YEAR,month(dateofbirth)AS MONTH,day(dateofbirth)AS DATE
 from customers;
@@ -840,7 +841,7 @@ from customers;
 SELECT concat(firstname, " ", lastname) AS fullname,dateofbirth,
 floor(datediff(curdate(),dateofbirth)/365) as age from customers;
 
--- DATE ADD function
+-- DATE ADD function..**************************************************************************************************
 
 SELECT concat(firstname, " ", lastname) AS fullname,AccountCreationDate,
 date_add(AccountCreationDate,interval 1 year) as KYCRenual from customers;
@@ -849,31 +850,31 @@ date_add(AccountCreationDate,interval 1 year) as KYCRenual from customers;
 
 -- AGGRIGATE FUNCTION ..................................................................................................
 
--- COUNT () FUNCTION .... Count rows 
+-- COUNT () FUNCTION .... Count rows ..**************************************************************************************************
 
 SELECT count(*) AS TotalCustomers FROM customers; -- count rows
 SELECT count(Phone) AS TotalCustomers FROM customers; -- it skip the null values rows and return output
 
--- SUM () FUNCTION
+-- SUM () FUNCTION..**************************************************************************************************
 
 SELECT sum(Balance) AS TotalBalance from Accounts;
 SELECT sum(Balance) AS SavingBalance from Accounts where AccountType = "Savings";
 SELECT sum(Balance) AS SavingBalance from Accounts where AccountType = "Current";
 
--- AVG () FUNCTION
+-- AVG () FUNCTION..**************************************************************************************************
 
 SELECT avg(Amount) AS AverageAmount FROM transactions;
 SELECT avg(Amount) AS AverageAmountDeposit FROM transactions WHERE transactiontype = "Deposit";
 SELECT avg(Amount) AS AverageAmountWithdrawal FROM transactions WHERE transactiontype = "Withdrawal";
 
--- MAX () AND MIN () FUNCTION
+-- MAX () AND MIN () FUNCTION...**************************************************************************************************
 -- find maximum balace in savings account
 SELECT max(Balance) as MaxBalance from Accounts where AccountType = "Savings";
 
 -- find minimum balace in savings account
 SELECT min(Balance) as MaxBalance from Accounts where AccountType = "Savings";
 
--- GROUP BY () FUNCTION
+-- GROUP BY () FUNCTION....********************************************************************************************************
 
 SELECT transactiontype, sum(amount) from transactions
 group by (TransactionType);
@@ -892,7 +893,7 @@ From accounts
 group by BranchID,AccountType
 order by BranchID;
 
--- HAVING
+-- HAVING...**************************************************************************************************************
 
 SELECT branchid,AccountType,
 count(*)
@@ -919,14 +920,16 @@ from customers
 group by year(AccountCreationDate)
 order by years;
 
--- JOINS
+-- JOINS..*****************************************************************************************************************
 -- A join combines a relaated rows from different tables based on a column 
--- inner joins
+
+-- inner joins ...**********************************************************************************************************
 -- defination : matches rows that exist in both tables
 
 select * from loans;
 select * from accounts;
 select * from branches;
+select * from customers;
 
 select c.CustomerID,c.FirstName,c.LastName,l.LoanAmount,l.IntrestRate
 FROM Customers c
@@ -941,8 +944,7 @@ select a.accountid,a.accounttype,b.branchname,b.branchaddress
 from accounts a
 inner join branches b
 on b.branchid = a.branchid
-where AccountType = 'savings'
-limit 3;
+where AccountType = 'savings';
 
 -- find all the cusomers(name,phone) where transactions (accounttype,balance) is deposit
 
@@ -952,5 +954,70 @@ inner join accounts	a
 on c.customerid = a.customerid
 where accounttype = 'savings';
 
+INSERT INTO Customers
+(CustomerID, FirstName, LastName, Email, Phone, AccountCreationDate, DateOfBirth)
+VALUES
+(110,'Aditya','Gaydhane','aditya@gmail.com','9954868435','2026-05-08','1999-09-019'),
+(111,'Suhas','Rajput','suhas@gmail.com',NULL,'2025-04-09','1995-02-05'),
+(112,'Sarthak','Kamble','sarthak@gmail.com','9429265678','2022-03-07','1993-01-03');
+
 select * from customers;
 select * from accounts;
+
+-- LEFT JOIN....***********************************************************************************************************
+-- RETURN all rows from the left table amd matches rows from the right
+
+select c.firstname,c.lastname,c.phone,a.accounttype,a.balance
+from customers c
+left join accounts a
+on c.CustomerID = a.CustomerID;
+
+select c.firstname,c.lastname,c.phone,a.accounttype,a.balance
+from  accounts a
+left join customers c
+on c.CustomerID = a.CustomerID;
+
+INSERT INTO branches
+(BranchID, BranchName, BranchAddress, BranchPhone)
+VALUES
+(306,'City Branch','Dharampeth,Nagpur','9876546578');
+
+INSERT INTO Accounts
+(AccountID, CustomerID, AccountType, Balance, BranchID)
+VALUES 
+(210,110,'Savings','70000','306'),
+(211,111,'Current','65000','305');
+
+INSERT INTO Transactions
+(TransactionID,TransactionDate,Amount,TransactionType,AccountID)
+VALUES 
+(410, '2026-06-01', 5000, 'Deposit', '201'),
+(411, '2026-05-08', 12000, 'Withdrawal', '201'),
+(412, '2026-07-15', 2000, 'Deposit', '202'),
+(413, '2026-05-20', 8000, 'Withdrawal', '202'),
+(414, '2026-03-15', 4000, 'Deposit', '203'),
+(415, '2026-07-20', 3000, 'Withdrawal', '206'),
+(416, '2026-08-15', 2500, 'Deposit', '204'),
+(417, '2026-03-20', 4500, 'Withdrawal', '208'),
+(418, '2026-09-15', 6500, 'Deposit', '204'),
+(419, '2026-08-20', 5500, 'Withdrawal', '207'),
+(420, '2026-02-20', 7500, 'Withdrawal', '205');
+
+INSERT INTO Accounts
+(AccountID, CustomerID, AccountType, Balance, BranchID)
+VALUES 
+(212,101,'Current','70000','301'),
+(213,103,'Savings','65000','301');
+
+select * from accounts;
+select * from transactions;
+
+select c.CustomerID,a.accountid,concat(c.firstname," ",lastname) as Fullname, a.accounttype,a.balance
+from customers c
+inner join accounts a
+on c.CustomerID = a.CustomerID
+order by c.CustomerID;
+
+
+-- RIGHT JOIN .....*************************************************************************************************************
+-- 
