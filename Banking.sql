@@ -481,7 +481,7 @@ VALUES
 (509, 320000.00, 5.75, '2026-04-17', '2030-04-16', '109');
 select * from loans;
 
--- CASE STATEMENT
+-- CASE STATEMENT...************************************************************************************
 -- USED TO APPLY CONDTIONAL LOGIC
 -- USING CASE STATEMENT
 
@@ -735,17 +735,17 @@ ELSE 'NOT APPLICABLE'
 END AS'Transactions Profile'
 FROM Transactions;
 
--- USING UPPER CASE
+-- USING UPPER CASE...************************************************************************************
 
 SELECT CustomerID, upper (FirstName), upper (LastName)
 From Customers;
 
--- USING LOWE CASE
+-- USING LOWE CASE...************************************************************************************
 
 SELECT CustomerID, LOWER (FirstName), LOWER (LastName)
 From Customers;
 
--- USING LENGTH CASE
+-- USING LENGTH CASE...************************************************************************************
 
 SELECT LastName, LENGTH (LastName)
 From Customers;
@@ -756,19 +756,19 @@ SELECT char_length("NAGPUR"); -- GIVES OP IN NUMBER OF CHARACTERS
 SELECT char_length("नागपूर"); -- GIVES OP IN NUMBER OF CHARACTERS
 -- " AS " use for change the column name
 
--- CONCAT function
+-- CONCAT function...************************************************************************************
 
 SELECT concat( " OM", " ","SUPARE") AS NAME;
 
 SELECT concat(firstname, " ", lastname) AS fullname,phone from customers;
 
--- SUBSTRING () FUNCTION
+-- SUBSTRING () FUNCTION...************************************************************************************
 
 SELECT substring("HELLO WORLD",1,5);
 
 SELECT CustomerID, concat(substring(firstname,1,1),".",lastname)AS FULLNAME,Phone from customers;
 
--- TRIM FUNCTION 
+-- TRIM FUNCTION ...************************************************************************************
 -- trim remove extra spaces 
 -- SELECT TRIM (username)
 -- FROM user
@@ -777,7 +777,7 @@ SELECT length("HELLO WORLD"); -- without trim function
 SELECT length(TRIM("  HELLO WORLD  ")); -- with trim function
 SELECT length(TRIM(SUBSTRING("HELLO WORLD",6))); -- WITH TRIM AND SUBSTRING
 
--- REPLACE () FUNCTION
+-- REPLACE () FUNCTION...************************************************************************************
 --  case sensitive
 SELECT replace("Mat","M","C");
 
@@ -911,7 +911,7 @@ SELECT branchid,AccountType,
 count(*)
 From accounts
 group by BranchID,AccountType
-having count(*) >= 2 AND AccountType = "Savings";
+having count(*) >= 2; -- AND AccountType = "Savings";
 select * from customers;
 
 -- Find Number Of Customers Specific Years From Customers
@@ -964,7 +964,7 @@ VALUES
 select * from customers;
 select * from accounts;
 
--- LEFT JOIN....***********************************************************************************************************
+-- LEFT JOIN *************************** DATE : 18-08-2026.........................****************************************
 -- RETURN all rows from the left table amd matches rows from the right
 
 select c.firstname,c.lastname,c.phone,a.accounttype,a.balance
@@ -1021,3 +1021,89 @@ order by c.CustomerID;
 
 -- RIGHT JOIN .....*************************************************************************************************************
 -- 
+
+-- Q.1) Display customers who do not have a Current account.
+
+select a.AccountID,c.firstname,c.lastname
+from customers c
+inner join accounts	a
+on c.customerid = a.customerid
+where accounttype not in ("Current");
+
+-- Q.2)  Display Customername,Accountcreation date,Accounttype,Balance for customers whose account was created in 2025.
+
+select c.CustomerID,concat(c.firstname," ",c.lastname) as Fullname,c.accountcreationdate,a.accounttype,a.balance
+from customers c
+inner join accounts a
+on c.CustomerID = a.CustomerID
+where year(accountCreationDate) =(2025);
+
+-- Q.3) . Display:Customername,Accountcreation date,Accounttype and calculate the number of days since account creation.
+
+Select c.CustomerID,concat(c.firstname," ",c.lastname) as Fullname,c.accountcreationdate,a.accounttype,
+datediff(curdate(),accountcreationdate) as NoOfDays
+from customers c
+inner join accounts a
+on c.CustomerID = a.CustomerID;
+
+select * from customers;
+select * from accounts;
+
+-- Q.4) Find the number of accounts held by each customer.
+
+SELECT CustomerID,AccountType,
+count(*)
+From accounts
+group by CustomerID,AccountType
+order by CustomerID;
+
+SELECT c.customerid,concat(c.firstname," ",c.lastname) AS fullname, COUNT(a.accountid) AS total_accounts
+FROM customers c
+left JOIN accounts a
+ON c.customerid = a.customerid
+GROUP BY c.customerid;
+
+-- Q.5) Find the total balance held by each customer.
+
+SELECT c.customerid,concat(c.firstname," ",c.lastname) AS fullname,sum(a.balance) as totalbalance
+from customers c
+left join accounts a
+on c.CustomerID = a.customerid
+GROUP BY c.customerid, fullname;
+
+-- Q.6) find the number of customers for each account type.
+
+SELECT a.accounttype,count(c.CustomerID) AS total_customer
+FROM accounts a
+left JOIN customers c
+ON c.customerid = a.customerid
+GROUP BY a.AccountType;
+
+
+
+-- Q.15) 15. Display all branches and their account count, including branches that have 1 or more accounts.
+
+SELECT b.branchid,b.branchname,count(a.accountid) as totalaccount
+from branches b
+left join accounts a 
+on b.branchid = a.branchid
+group by branchid;
+
+select * from accounts;
+
+--  full outer join.........**************************************************************************  
+
+-- joining Customers and acoounts
+
+select * from customers c
+left join accounts a 
+on c.customerid = a.CustomerID
+UNION
+select * from customers c
+right join accounts a 
+on c.customerid = a.CustomerID;
+
+-- cross join.............*********************************************************************************************
+
+select * from customers c
+cross join accounts a ;
