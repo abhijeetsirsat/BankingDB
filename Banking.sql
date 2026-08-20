@@ -1079,6 +1079,72 @@ left JOIN customers c
 ON c.customerid = a.customerid
 GROUP BY a.AccountType;
 
+-- Q.7) Find the total balance for each account type.
+SELECT AccountType,sum(balance) as totalbalance
+from accounts
+group by AccountType;
+
+-- Q.8)  Find the highest balance held by each account type.
+
+SELECT AccountType,max(balance) as highestbalance
+from accounts
+group by AccountType;
+
+-- Q.9) Find the number of customers for each branch.
+
+select BranchName,count(BranchID)
+from branches
+group by BranchName;
+
+-- Q.10)  Find customers whose total account balance is greater than ₹40,000.
+
+select c.customerid,sum(a.balance) as totalamount
+from customers c 
+inner join accounts a 
+on c.CustomerID = a.CustomerID
+group by c.CustomerID
+having totalamount >40000;
+
+select customerid,sum(balance) as totalbalance
+from accounts
+group by customerid
+having totalbalance >40000;
+
+-- Q.11) Find customers who have more than one account.
+
+SELECT CustomerID,count(AccountID) as TotalAccounts
+from accounts
+group by CustomerID
+HAVING TotalAccounts >=2; 
+
+-- Q.12. Find customers who do not have an account
+
+SELECT c.CustomerID,concat(c.firstname," ",c.lastname) as fullname
+FROM Customers c
+LEFT JOIN Accounts a 
+ON c.CustomerID = a.CustomerID
+WHERE a.AccountID IS NULL;
+
+-- Q.13. Find customers who do not have any loan.
+
+SELECT c.CustomerID,concat(c.firstname," ",c.lastname) as fullname
+FROM Customers c
+LEFT JOIN loans l 
+ON c.CustomerID = l.CustomerID
+WHERE l.loanid IS NULL;
+
+-- Q.14. Find customers who have never performed a transaction.
+SELECT c.CustomerID,a.accountid
+from customers c
+inner join accounts a 
+on c.CustomerID = a.CustomerID;
+
+
+
+
+select * from accounts;
+select * from customers;
+select * from loans;
 
 
 -- Q.15) 15. Display all branches and their account count, including branches that have 1 or more accounts.
@@ -1107,3 +1173,71 @@ on c.customerid = a.CustomerID;
 
 select * from customers c
 cross join accounts a ;
+
+-- SELF JOIN
+
+CREATE TABLE Employees(
+EmployeeID INT PRIMARY KEY,
+EmployeeName VARCHAR(50) NOT NULL,
+ManagerID INT,
+Department VARCHAR(50),
+Salary DECIMAL(10,2),
+JoiningDate DATE,
+BranchID INT,
+
+FOREIGN KEY (ManagerID)
+REFERENCES Employees(EmployeeID),
+
+FOREIGN KEY (BranchID)
+REFERENCES Branches(BranchID)
+);
+
+SELECT * FROM employees;
+
+INSERT INTO Employees
+    (EmployeeID, EmployeeName, ManagerID, Department, Salary, JoiningDate, BranchID)
+VALUES
+    (1, 'Rajesh Sharma', NULL, 'Management', 120000.00, '2018-04-15', 301),
+    (2, 'Priya Patel', 1, 'Human Resources', 75000.00, '2019-06-10', 302),
+    (3, 'Amit Kumar', 1, 'Finance', 82000.00, '2020-01-20', 303),
+    (4, 'Sneha Verma', 1, 'IT', 95000.00, '2019-09-05', 304),
+    (5, 'Rahul Singh', 1, 'Sales', 78000.00, '2021-03-12', 305),
+    (6, 'Neha Joshi', 2, 'Human Resources', 55000.00, '2021-07-19',301),
+    (7, 'Vikas Gupta', 2, 'Human Resources', 52000.00, '2022-02-14',302),
+    (8, 'Pooja Mehta', 3, 'Finance', 60000.00, '2021-11-08', 303),
+    (9, 'Suresh Yadav', 3, 'Finance', 58000.00, '2022-05-16', 304),
+    (10, 'Anjali Deshmukh', 4, 'IT', 72000.00, '2020-08-24', 305),
+    (11, 'Rohan Kulkarni', 4, 'IT', 68000.00, '2021-10-11', 301),
+    (12, 'Kavita Rao', 4, 'IT', 65000.00, '2022-01-17', 302),
+    (13, 'Arjun Malhotra', 5, 'Sales', 57000.00, '2022-06-20', 303),
+    (14, 'Meena Shah', 5, 'Sales', 59000.00, '2021-12-06', 304),
+    (15, 'Deepak Thakur', 5, 'Sales', 54000.00, '2023-01-09', 305),
+    (16, 'Nitin Pawar', 6, 'Human Resources', 42000.00, '2023-04-18', 301),
+    (17, 'Swati Mishra', 7, 'Human Resources', 40000.00, '2023-07-03', 302),
+    (18, 'Manish Jain', 8, 'Finance', 45000.00, '2023-02-27', 303),
+    (19, 'Komal Sinha', 9, 'Finance', 43000.00, '2023-08-14',304),
+    (20, 'Akash Bansal', 10, 'IT', 50000.00, '2023-05-22',305);
+
+SELECT * FROM branches;
+
+SELECT e.employeeid,e.EmployeeName AS EmployeeName,m.EmployeeName as ManagerName
+FROM Employees e
+left JOIN Employees m
+on e.Managerid = m.employeeid; 
+
+-- Including Branch Name Also
+
+SELECT e.employeeid,b.branchname,e.EmployeeName AS EmployeeName,m.EmployeeName as ManagerName
+FROM Employees e
+left JOIN Employees m
+on e.Managerid = m.employeeid
+left JOIN branches b
+on e.branchid = b.branchid;
+
+-- find all the employees reports to sneha varma
+
+SELECT e.employeeID,e.EmployeeName,e.Department
+from employees e
+inner join employees m
+on m.ManagerID = e.EmployeeID
+where m.EmployeeName = "Sneha Varma";
