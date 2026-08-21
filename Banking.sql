@@ -1241,3 +1241,57 @@ from employees e
 inner join employees m
 on m.ManagerID = e.EmployeeID
 where m.EmployeeName = "Sneha Varma";
+
+-- 8.12 time question
+SELECT a.accounttype,concat(c.FirstName,c.LastName) as fullname,avg(a.Balance)
+from customers c
+inner join accounts a
+on c.CustomerID = a.CustomerID
+where a.accounttype = "Savings"
+group by Fullname
+having avg(a.balance) > 56230.76;
+
+select avg(balance) from accounts;
+
+-- SUBQUERIES ..................*****************************************************************************************
+-- subquery is a select statement written insdide another sql statement such as
+-- select , insert, update, delete
+-- types of subquery 
+-- scaller subquery / single row subquery 
+-- multiple row subquery
+-- table subquery
+-- corelated subquery 
+
+-- scaler subquery
+-- scalare subquery (single value)
+-- defination it return single values
+-- it return exactly one row and one column
+
+select c.firstName,a.balance
+from customers c 
+left join accounts a
+on a.CustomerID = c.CustomerID
+where accounttype = "savings" AND balance > (
+select avg(balance)  from accounts
+);
+
+-- find the account (s) having the highest value
+
+select c.firstName,a.balance
+from customers c 
+left join accounts a
+on a.CustomerID = c.CustomerID
+where balance = (
+select max(balance) from accounts
+);
+
+-- find the customer whose year of birth is earlier than the average year of birth of all customers
+
+select firstname,lastname,year(dateofbirth)
+from customers 
+where year(dateofbirth) < (
+select avg(year(dateofbirth)) 
+from customers
+);
+
+select avg(year(dateofbirth)) from customers;
