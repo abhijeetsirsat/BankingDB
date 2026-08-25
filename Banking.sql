@@ -1295,3 +1295,180 @@ from customers
 );
 
 select avg(year(dateofbirth)) from customers;
+
+-- prcatice questions 
+
+-- Q.2) Display the CustomerID, FirstName and Email of customers whose AccountCreationDate is after 1-Jan-2025.
+
+SELECT customerid,firstname,email,AccountCreationDate
+from customers
+where AccountCreationDate > ( select (AccountCreationDate) = 2025-01-01
+from customers
+);
+
+select  avg(balance) from accounts;
+
+-- Q.1) 1. Find all accounts whose balance is greater than the average balance of all accounts.
+
+SELECT accountid,balance
+from accounts
+where balance >(
+select avg(balance) from accounts
+);
+
+SELECT max(balance) FROM accounts;
+
+-- Q.2) Find the account(s) having the highest balance.
+
+select accountid,balance
+from accounts
+where balance >=(
+select max(balance) from accounts
+);
+
+-- Q.3) Find customers whose year of birth is earlier than the average year of birth of all customers.
+
+select firstname,lastname,year(dateofbirth)
+from customers 
+where year(dateofbirth) < (
+select avg(year(dateofbirth)) 
+from customers
+);
+
+-- Q.4) 4. Find accounts whose balance is equal to the average balance of all accounts.
+
+SELECT avg(balance) FROM accounts;
+
+select accountid,balance
+from accounts
+where balance = (
+select avg(balance) from accounts
+);
+
+select c.firstName,a.balance
+from customers c 
+left join accounts a
+on a.CustomerID = c.CustomerID
+where balance = (
+select max(balance) from accounts
+);
+
+-- Q.5) 5. Find the customer who owns the account with the highest balance.
+
+select c.firstname,a.balance
+from customers c
+left join accounts a 
+on c.customerid = a.CustomerID
+where a.balance = (
+select max(balance) from accounts
+);
+
+-- B. Multiple-Row Subqueries
+
+-- Q.1) Find all customers who have taken at least one loan.
+
+select c.customerid,c.firstname,c.lastname
+from customers c
+join loans l
+on c.customerid = l.CustomerID;
+
+select * from loans;
+
+-- Q.2) 7. Find all customers who have not taken any loan.
+
+SELECT c.CustomerID, c.FirstName, c.LastName
+FROM Customers c
+LEFT JOIN Loans l
+    ON c.CustomerID = l.CustomerID
+WHERE l.CustomerID IS NULL;
+
+-- Q.3) 8. Find all customers who have at least one Savings account.
+
+SELECT c.CustomerID, c.FirstName, c.LastName,a.AccountType
+FROM Customers c
+LEFT JOIN accounts a 
+    ON c.CustomerID = a.CustomerID
+WHERE a.AccountType = "Savings";
+
+-- Q.4)  Find all customers who have at least one Current account.
+
+SELECT c.customerid,c.firstname,c.lastname,a.accounttype
+from customers c
+left join accounts a
+on c.CustomerID = a.CustomerID
+where a.AccountType = "Current";
+
+-- Q.5) 10. Find all customers who have an account in BranchID = 1.
+
+SELECT * FROM branches;
+SELECT * FROM accounts;
+
+SELECT c.CustomerID, c.FirstName, c.LastName
+FROM Customers c
+LEFT JOIN Accounts a
+ON c.CustomerID = a.CustomerID
+WHERE a.BranchID =301;
+
+-- q.6) Find all accounts whose balance is greater than any account in BranchID = 1.
+
+-- multiple row subquery
+-- a multiple row subquery return more than one row , usually a single column
+-- used in IN , ANY , ALL , EXIST
+
+-- Q.1) Find all customers who have taken at least one loan.
+
+SELECT customerid,firstname,lastname
+from customers
+where CustomerID IN ( 
+select CustomerID from loans);
+
+select c.customerid,c.firstname,a.accounttype
+from customers c
+left join accounts a
+on c.CustomerID = a.CustomerID
+where c.customerid IN (
+SELECT a.customerid from accounts
+where a.accounttype = "Savings");
+
+select customerid,firstname,lastname
+from customers
+where customerid IN (
+select customerid from accounts
+where accounttype = "Savings");
+
+-- Find all customers who have an account in BranchID = 1.
+select *
+from customers
+where customerid IN (
+SELECT customerid from accounts
+where branchid = 301 );
+
+SELECT customerid from accounts
+where branchid = 301;
+
+-- FIND ALL THE ACCOUNTS WHOSE BVALANCE IS GRETER THAN ANY ACCOUNT IN BRANCH ID = 1
+
+select * from accounts;
+
+SELECT *
+FROM accounts
+WHERE Balance > any (
+    SELECT Balance
+    FROM accounts
+    WHERE BranchID = 301
+);
+
+-- FIND ALL THE ACCOUNTS WHOSE BVALANCE IS GRETER THAN ALL ACCOUNT IN BRANCH ID = 1
+
+SELECT *
+FROM accounts
+WHERE Balance > all (
+    SELECT Balance
+    FROM accounts
+    WHERE BranchID = 301
+);
+
+-- FIND THE BRANCH WITH THE HIGHEST AVERAGE ACCOUNT BALANCE
+
+SELECT avg(BALANCE) FROM ACCOUNTS;
+
