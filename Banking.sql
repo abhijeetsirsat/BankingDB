@@ -1470,5 +1470,49 @@ WHERE Balance > all (
 
 -- FIND THE BRANCH WITH THE HIGHEST AVERAGE ACCOUNT BALANCE
 
+SELECT BranchID, floor(avg(Balance)) AS AverageBalance
+FROM accounts
+GROUP BY BranchID
+ORDER BY AverageBalance DESC
+LIMIT 1;
+
 SELECT avg(BALANCE) FROM ACCOUNTS;
 
+-- CORELATED SUBQUERY 
+-- A correlated subquery refrences one or more columns from the outer query 
+
+-- Q.1 FIND ACCOUNTS WHOSE BALANCE IS GRETER THAN THE AVERAGE BALANCE OF THE RESPECTIVE BRANCH
+
+SELECT a.accountid,a.balance,a.branchid
+from accounts a 
+where a.balance > (
+select avg(a1.balance) 
+from accounts a1
+where a1.branchid = a.branchid
+);
+
+select avg(balance) from accounts;
+select *   from accounts;
+
+select e.employeeid,e.salary,e.department
+from employees e
+where e.salary >(
+select avg(e1.salary) from employees e1
+where e1.department = e.department
+);
+
+-- find customers who have more than one accounts
+
+SELECT c.firstname,c.lastname
+from customers c
+where  ( 
+select count(*) from accounts a
+where c.CustomerID =a.customerid
+)>1;
+
+select * from customers;
+select * from accounts;
+
+-- TABLE SUBQUERY ( DERIVED TABLE / INLINE VIEW )
+-- A TABLE SUBQUERY RETURNS THE MULTIPLE ROW AND MULTIPKLE COLUMN
+-- IT USED INSIDE INSIDE THE FROM CLAUSE AND BEHAVES LIKE A TEMOPORARY 
