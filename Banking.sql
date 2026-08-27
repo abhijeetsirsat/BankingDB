@@ -1516,3 +1516,67 @@ select * from accounts;
 -- TABLE SUBQUERY ( DERIVED TABLE / INLINE VIEW )
 -- A TABLE SUBQUERY RETURNS THE MULTIPLE ROW AND MULTIPKLE COLUMN
 -- IT USED INSIDE INSIDE THE FROM CLAUSE AND BEHAVES LIKE A TEMOPORARY 
+-- it subquery must have alias name 
+-- SELECT country_date.country,country_data.avg_followers
+-- from (
+-- select country, avg(followers) as avgfollowers
+-- 
+-- find the average account balance for each accounttype using a deriverd table
+
+select Accountbalance.AccountType,accountbalance.Avgbalance
+from (
+select accounttype,avg(balance)  as AvgBalance
+from accounts 
+group by accounttype) as accountbalance;
+
+-- display only those accounttypes whose avg balance is greter than 30000
+
+select Accountbalance.AccountType,accountbalance.Avgbalance
+from (
+select accounttype,avg(balance)  as AvgBalance
+from accounts 
+group by accounttype) as accountbalance
+where AvgBalance > 53000;
+
+-- find the top 3 customers based on their total account balance
+
+select TopCustomers.customerid,TopCustomers.firstname,TopCustomers.TotalBalance
+from(
+select a.customerid,c.firstname,sum(a.balance) as TotalBalance
+from accounts a
+inner join Customers c
+on a.CustomerID = c.customerid
+group by customerid) as TopCustomers
+order by  TotalBalance desc
+LIMIT 3;
+
+select customerid,sum(balance) as TotalBalance
+from accounts 
+group by customerid
+order by sum(balance) desc
+limit 3;
+
+-- SUBQUERY IN SELECT CLAUSE
+-- Subquery in the select clause is typically  a scaller subquery used to crete a derived column
+
+-- display each customer along with the number of accounts they have
+
+select c.customerid,
+( 
+select count(*) from accounts a
+where c.customerid = a.customerID
+) as TotalAccounts
+from customers c
+order by TotalAccounts;
+
+-- Subqueries inside UPDATE clause
+-- increase the balance of accounts belonging to custoners who have teken any loan by 5 %
+
+UPDATE accounts
+SET balance =  balance + balance *0.05
+WHERE Customerid IN (
+SELECT customerid 
+FROM loans 
+);
+
+select * from accounts;
