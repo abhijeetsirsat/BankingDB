@@ -1580,3 +1580,66 @@ FROM loans
 );
 
 select * from accounts;
+select * from transactions;
+
+-- delete all transactions below amount of 500 where transactiontype is withdrawal
+
+DELETE FROM transactions
+WHERE TransactionType = "Withdrawal" and amount <5000 ;
+
+DELETE FROM transactions
+WHERE accountid IN (
+    SELECT AccountID 
+    FROM  (select AccountID from transactions
+    WHERE amount < 5450 and Transactiontype = "Withdrawal")as temp
+) and transactiontype = "Withdrawal";
+
+select * from accounts;
+
+-- SUBQUERY TO INSERT CLAUSE
+
+-- 
+
+CREATE TABLE HighValAccounts (
+	AccountID INT,
+    CustomerId INT,
+    BranchID INT,
+    Balance DECIMAL(10,2),
+    AccountType VARCHAR(20),
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
+    FOREIGN KEY (BranchId)REFERENCES Branches(branchID)
+);
+
+INSERT INTO HighValAccounts(
+Accountid,customerid,branchid,balance,accounttype)
+select Accountid,customerid,branchid,balance,accounttype
+from accounts where balance >( select avg(balance) from accounts);
+
+select avg(balance) from accounts;
+
+select * from highvalaccounts;
+
+CREATE TABLE HighBalanceCustomers(
+CustomerID INT,
+TotalBalance DECIMAL(10,2),
+FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
+);
+
+INSERT INTO HighBalanceCustomers(customerid,TotalBalance)  
+( select customerid,TotalBalance from
+( select CustomerID,sum(balance) As TotalBalance
+from Accounts
+group by Customerid) AS CusBalance
+where TotalBalance > 50000);
+
+select sum(balance) from accounts;
+select * from highbalancecustomers;
+
+-- SQL VIEWS 
+create view PremiumAccounts as 
+select accountid,balance,accounttype,customerid
+from accounts
+where balance > 50000;
+
+select * from premiumaccounts
+where accounttype = "Savings";
