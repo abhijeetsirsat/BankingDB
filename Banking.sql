@@ -1636,6 +1636,7 @@ select sum(balance) from accounts;
 select * from highbalancecustomers;
 
 -- SQL VIEWS 
+-- A view is a portal 
 create view PremiumAccounts as 
 select accountid,balance,accounttype,customerid
 from accounts
@@ -1643,3 +1644,98 @@ where balance > 50000;
 
 select * from premiumaccounts
 where accounttype = "Savings";
+
+select * from premiumaccounts;
+select * from transactions;
+
+create or replace view PremiumAccounts as 
+select a.accountid,t.transactionid,t.TransactionType,t.TransactionDate,t.Amount,a.balance,a.accounttype,a.customerid
+from accounts a 
+inner join transactions t 
+on a.AccountID = t.accountid 
+where balance > 50000;
+
+select * from premiumaccounts;
+
+create or replace view PremiumAccounts as 
+select a.accountid,a.balance,a.customerid
+from accounts a 
+inner join transactions t 
+on a.AccountID = t.Accountid 
+where balance > 50000
+order by a.Balance desc
+limit 2;
+
+select accountid,balance,customerid
+from premiumaccounts
+order by balance desc
+limit 2;
+
+-- WINDOWS FUNCTIONS 
+-- PERFORM CALCULATIONS ACROSS RELATED ROWS 
+-- DO NOT REDUCE NUMBER OF ROWS
+-- USE THE OVER() CLAUSE
+
+-- SYNTAX
+--- SELECT (COLUMN1),
+-- FUNCTION(COLUMN2) -- CALCULATION sum,avg,rank,row_number) FUNCTIONS
+-- OVER[PARTITION BY COLUMN3](ORDER BY COLUMN4)  -- OVER - MAKES IT A VINDOWS FUNCTION -- PARTITIOMN - DEVIDES DATA IN GROUPS
+-- AS NEW COLUMN -- IT CREATES NEW COLUMN AND AS GIVES NAME TO THE COLUMN
+-- FROM TABLENAME
+
+-- OVER CLAUSE 
+-- TURNS A NORMAL FUNCTION INTO A WINDOWS FUNCTIONS
+
+-- COMMON WINDOWS FUNCTION 
+-- ROW NUMBER , RANK , DENSE RANK , PARTITION BY
+
+-- SELECT POSTID,LIKES,
+-- SUM(LIKES) OVER () AS TOTAL_LIKES 
+-- FROM POSTS
+
+-- windows functions ********************************************************************************
+
+select * FROM ACCOUNTS;
+
+SELECT accountid,AccountType,balance,
+avg(balance) over () as TotalAvgBalance
+from accounts;
+
+-- PARTITION BY  ***************************************************************************************************** 
+-- ITS WORKS LIKE GROUP BY 
+-- BUT DOES NOT MURGE ROWS
+-- ITS KEEP EVERY ROWS VISIBALE
+
+SELECT accountid,AccountType,balance,
+avg(balance) over (partition by AccountType) as TotalAvgBalance
+from accounts;
+
+-- USING ORDER BY **************************************************************************
+
+SELECT accountid,AccountType,balance,
+avg(balance) over (partition by AccountType order by balance) as TotalAvgBalance
+from accounts;
+
+-- ROW_NUMBER() **************************************************************************
+-- ITS A RANKING WINDOS FUNCTION
+-- NO DUPLICATION IN RANKING
+
+SELECT accountid,AccountType,balance,
+row_number() over() as RowNumber,
+avg(balance) over () as TotalAvgBalance
+from accounts;
+
+-- RANK () FUNCTION
+-- SAME VALUES GET THE SAME RANK 
+-- and skips the number after tie rank 
+
+SELECT accountid,AccountType,balance,
+rank() over(order by balance desc) as Ranks
+from accounts;
+
+-- DENSE RANK () FUNCTION
+-- 
+SELECT accountid,AccountType,balance,
+rank() over(order by balance desc) as Ranks,
+dense_rank() over(order by balance desc) as DenseRanks
+from accounts;
